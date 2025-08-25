@@ -9,13 +9,15 @@ DEVICE_PATH := device/xiaomi/garnet
 BUILD_BROKEN_DUP_RULES := true
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 
+# Inherit from proprietary files for miuicamera
+-include device/xiaomi/miuicamera-garnet/BoardConfig.mk
+
 # A/B
 AB_OTA_PARTITIONS := \
     boot \
     dtbo \
     odm \
     product \
-    recovery \
     system \
     system_ext \
     vbmeta \
@@ -67,12 +69,12 @@ BOARD_USES_QCOM_HARDWARE := true
 
 # HIDL
 DEVICE_MATRIX_FILE := hardware/qcom-caf/common/compatibility_matrix.xml
-DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := \
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += \
     hardware/qcom-caf/common/vendor_framework_compatibility_matrix.xml \
     hardware/xiaomi/vintf/xiaomi_framework_compatibility_matrix.xml \
     vendor/lineage/config/device_framework_matrix.xml
 
-DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/configs/hidl/manifest.xml
+DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/configs/hidl/manifest.xml
 
 ODM_MANIFEST_SKUS += IN
 ODM_MANIFEST_IN_FILES := $(DEVICE_PATH)/configs/hidl/manifest_nonfc.xml
@@ -96,9 +98,8 @@ BOARD_KERNEL_IMAGE_NAME := Image
 TARGET_KERNEL_ADDITIONAL_FLAGS := TARGET_PRODUCT=garnet
 TARGET_KERNEL_SOURCE := kernel/xiaomi/sm7435
 TARGET_KERNEL_CONFIG := \
-    gki_defconfig \
-    vendor/parrot_GKI.config \
-    vendor/garnet_GKI.config \
+    garnet_defconfig \
+    vendor/kernelsu.config \
     vendor/debugfs.config
 
 BOARD_BOOT_HEADER_VERSION := 4
@@ -233,6 +234,9 @@ WIFI_DRIVER_STATE_ON := "ON"
 WIFI_HIDL_FEATURE_DUAL_INTERFACE := true
 WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
 WPA_SUPPLICANT_VERSION := VER_0_8_X
+
+# common
+-include device/xiaomi/common/BoardConfig.mk
 
 # Vendor
 include vendor/xiaomi/garnet/BoardConfigVendor.mk

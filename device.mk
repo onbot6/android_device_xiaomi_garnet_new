@@ -16,6 +16,12 @@ $(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
 # Qualcomm
 $(call inherit-product, hardware/qcom-caf/common/common.mk)
 
+# common
+$(call inherit-product-if-exists, device/xiaomi/common/device.mk)
+
+# MiuiCamera
+$(call inherit-product-if-exists, device/xiaomi/miuicamera-garnet/device.mk)
+
 # A/B
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
@@ -135,6 +141,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     hardware/qcom-caf/sm8450/display/config/snapdragon_color_libs_config.xml:$(TARGET_COPY_OUT_VENDOR)/etc/snapdragon_color_libs_config.xml
 
+# Dolby
+$(call inherit-product, hardware/dolby/dolby.mk)
+
 # DRM
 PRODUCT_PACKAGES += \
     android.hardware.drm-service.clearkey
@@ -151,6 +160,8 @@ PRODUCT_PACKAGES += \
     fastbootd
 
 # Fingerprint
+TARGET_HAS_UDFPS := true
+
 PRODUCT_PACKAGES += \
     android.hardware.biometrics.fingerprint-service.xiaomi \
     libudfpshandler
@@ -447,6 +458,9 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.wifi.direct.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.direct.xml \
     frameworks/native/data/etc/android.hardware.wifi.passpoint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.passpoint.xml \
     frameworks/native/data/etc/android.hardware.wifi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.xml
+
+# Sign key
+-include vendor/lineage-priv/keys/keys.mk
 
 # Vendor
 $(call inherit-product, vendor/xiaomi/garnet/garnet-vendor.mk)
